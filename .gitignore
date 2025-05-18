@@ -1,0 +1,38 @@
+# Ignore as dependências
+node_modules/
+.pnpm/
+.yarn/
+dist/
+
+# Ignora arquivos gerados pelo Quasar
+.quasar/
+.quasar-spa/
+
+# Arquivos temporários
+*.log
+*.tmp
+*.bak
+
+# Configurações locais de IDEs/editores
+.vscode/
+.idea/
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar arquivos do Windows PowerShell
+*.ps1
+*.ps1xml
+*.psc1
+*.pfx
+*.cer
+*.crl
+
+# Outros arquivos que causaram erros ou não precisam estar no repositório
+*.local
+*.env
+*.lock
+*.mjs
+*.map
+node_modules/.bin/
