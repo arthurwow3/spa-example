@@ -6,7 +6,7 @@ import {
   createWebHashHistory,
 } from 'vue-router'
 import routes from './routes'
-import { useAuthStore } from 'stores/auth'
+import { useUserStore } from 'stores/user'
 
 export default route(function () {
   const createHistory = process.env.SERVER
@@ -21,16 +21,30 @@ export default route(function () {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   })
 
-  // ✅ Navigation guard
+  // Guard de navegação para autenticação
   router.beforeEach(async (to, from, next) => {
-    const auth = useAuthStore()
-    const requiresAuth = to.path !== '/login'
-    if (requiresAuth && !auth.isLoggedIn) {
-      next('/login')
-    } else {
-      next()
+  const authStore = useUserStore();
+
+  // Verifica se o usuário está autenticado
+  if (!authStore.user && localStorage.getItem('auth_token')) {
+    try {
+      await authStore.getUser();
+    } catch (e) {
+      console.log(e)
+      authStore.logout();
     }
-  })
+  }
+
+  // Se a rota requer autenticação e o usuário não está autenticado
+  if (to.meta.requiresAuth && !authStore.user) {
+    // Armazena a rota de origem para redirecionamento após login
+    authStore.returnUrl = to.fullPath;
+    return next({ name: 'LoginPage' });
+  }
+
+  next();
+});
+
 
   return router
 })
