@@ -20,6 +20,7 @@ export const useAuthStore = defineStore('auth', {
       const { data } = await api.get('/api/user')
       this.user = data
       this.roles = data.roles.map((role) => role.name)
+
     },
 
     async logout() {
